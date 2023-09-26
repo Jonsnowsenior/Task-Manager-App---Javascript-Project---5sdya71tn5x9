@@ -1,1 +1,58 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<header>
+    <div class="logo">
+           <h1>Task Manager</h1>
+    </div>
+</header>
+<button id="add-task-button" onclick="openAddTaskModal()">Add Task</button>
+    <div class="task-manager">
+        <div class="section" id="open" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>Open</h2>
+            <ul class="task-list"  id="openTasks">
+                
+            </ul>
+        </div>
+        <div class="section" id="in-progress" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>In Progress</h2>
+            <ul class="task-list" id="inProgressTasks">
+                
+            </ul>
+        </div>
+        <div class="section" id="in-review" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>In Review</h2>
+            <ul class="task-list" id="inReviewTasks" >
+                
+            </ul>
+        </div>
+        <div class="section" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <h2>Done</h2>
+            <ul class="task-list" id="doneTasks" >
+                
+            </ul>
+        </div>
+    </div>
+    
+    <div id="add-task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddTaskModal()">&times;</span>
+            <h3>Add New Task=ss</h3>
+            <form id="task-form">
+                <label for="task-input">Task Description:</label>
+                <input type="text" id="task-input" required>
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+    </div>
+  
+    <script src="script.js"></script>
+</body>
+</html>
