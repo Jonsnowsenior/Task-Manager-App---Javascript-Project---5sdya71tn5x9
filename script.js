@@ -1,3 +1,4 @@
+// Define an array of tasks
 const tasks = [
   {
     title: "task1",
@@ -20,52 +21,95 @@ const tasks = [
     status: "done",
   },
 ];
-
-// JavaScript for modals
+let isEdit = true;
+// JavaScript functions for modals
 function openAddTaskModal() {
+  // Show the "Add Task" modal
+  const modalHeading = document.getElementById('modal-heading');
+    modalHeading.innerText = "Add new task"
+  isEdit= false;
+  nameInput.value = ""
+  descInput.value= ""
+  const submitBtnText = document.getElementById('submitBtn');
+  submitBtnText.textContent = "Add task"
   document.getElementById("add-task-modal").style.display = "block";
 }
 
 function closeAddTaskModal() {
+  // Close the "Add Task" modal
   document.getElementById("add-task-modal").style.display = "none";
 }
 
 function closeModal() {
+  // Close the task description modal
   document.getElementById("task-modal").style.display = "none";
 }
+// JavaScript for adding new tasks
+const taskForm = document.getElementById("task-form");
+const nameInput = document.getElementById("name-input");
+const descInput = document.getElementById('desc-input')
 
-// JavaScript to handle task description modal
+let toBeEdited ;
+// Event listener to show task description when a task is clicked
 document.querySelectorAll(".task-list").forEach((taskList) => {
   taskList.addEventListener("click", (event) => {
-    const taskDescription = event.target.textContent;
-    document.getElementById("task-description").textContent = taskDescription;
-    document.getElementById("task-modal").style.display = "block";
+
+    isEdit= true;
+    nameInput.value = tasks[event.target.id].title;
+    descInput.value= tasks[event.target.id].desc;
+   toBeEdited =event.target.id
+    const modalHeading = document.getElementById('modal-heading');
+    modalHeading.innerText = "Edit task"
+    const submitBtnText = document.getElementById('submitBtn');
+    submitBtnText.textContent = "Save Changes"
+    // Show task description in the modal when a task is clicked
+document.getElementById("add-task-modal").style.display = "block";
+ 
+   // document.getElementById("task-desc").value = taskDescription;
+    document.getElementById("add-task-modal").style.display = "block";
   });
 });
 
-// JavaScript for adding new tasks
-const taskForm = document.getElementById("task-form");
-const taskInput = document.getElementById("task-input");
+
 
 taskForm.addEventListener("submit", (event) => {
+ 
   event.preventDefault();
-  const taskDescription = taskInput.value;
-  if (taskDescription) {
-    const newTask = {
-      title: taskDescription,
-      desc: taskDescription,
-      status: "open",
-    };
-    tasks.push(newTask);
+  const taskName = nameInput.value;
+  const taskDescription = descInput.value;
+  if (taskDescription && taskName) {
+    
+    // Create a new task object and add it to the tasks array
+
+    if(isEdit){
+
+      tasks[toBeEdited].title  = taskName;
+   tasks[toBeEdited].desc = taskDescription;
+
+    }else {
+      const newTask = {
+        title: taskName,
+        desc: taskDescription,
+        status: "open",
+      };
+      console.log(newTask)
+      tasks.push(newTask);
+  
+    }
+   
+
+
     console.log(tasks);
-    taskInput.value = "";
-    loadTasks();
-    closeAddTaskModal();
+    taskName.value = "";
+    taskDescription.value = "";
+    loadTasks(); // Refresh the task list
+    closeAddTaskModal(); // Close the "Add Task" modal
   }
 });
 
+// Function to load tasks into the task boards
 const loadTasks = () => {
-  //clear the board
+  // Clear the task boards
   const removeOpen = document.getElementById("openTasks");
   while (removeOpen.firstChild) {
     removeOpen.firstChild.remove();
@@ -83,16 +127,13 @@ const loadTasks = () => {
     removeDone.firstChild.remove();
   }
 
-  tasks.map((task, index) => {
+  // Iterate through tasks and populate the task boards
+  tasks.forEach((task, index) => {
     const newTask = document.createElement("li");
     newTask.textContent = task.title;
     newTask.draggable = true;
     newTask.addEventListener("dragstart", drag);
     newTask.id = index;
-    // const deleteButton = document.createElement("i");
-    // deleteButton.classList.add("fa");
-    // deleteButton.classList.add("fa-trash-o");
-    // newTask.appendChild(deleteButton);
     document
       .getElementById(task.status)
       .querySelector(".task-list")
@@ -100,37 +141,40 @@ const loadTasks = () => {
   });
 };
 
-loadTasks();
-
+loadTasks(); // Initial task loading
 
 let draggedItem = null;
 
+// Function to allow dropping of tasks
 function allowDrop(event) {
   event.preventDefault();
 }
 
+// Function to handle dragging of tasks
 function drag(event) {
   draggedItem = event.target.id;
   console.log(event.target.id);
 }
 
+// Function to handle dropping of tasks
 function drop(event) {
   event.preventDefault();
 
   const movedTaskId = event.target.id;
   tasks[draggedItem].status = event.target.id;
-  loadTasks();
+  loadTasks(); // Refresh the task list
   if (event.target.classList.contains("task-list")) {
-    event.target.appendChild(draggedItem);
+    event.target.appendChild(document.getElementById(draggedItem));
   }
 }
 
-// to move tasks between sections
+// Function to open the move task modal
 function openMoveTaskModal(event) {
   moveTaskItem = event.target.parentElement;
   document.getElementById("add-task-modal").style.display = "block";
 }
 
+// Function to move tasks between sections
 function moveTask(destinationSectionId) {
   if (moveTaskItem) {
     const destinationSection = document.getElementById(destinationSectionId);
@@ -139,7 +183,7 @@ function moveTask(destinationSectionId) {
   }
 }
 
-//  to show task status
+// Function to show task status
 function showTaskStatus() {
   const sections = document.querySelectorAll(".section");
   const taskStatus = {};

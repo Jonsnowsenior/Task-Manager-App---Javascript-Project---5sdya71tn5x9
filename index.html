@@ -44,14 +44,20 @@
     <div id="add-task-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeAddTaskModal()">&times;</span>
-            <h3>Add New Task=ss</h3>
+            <h3 id="modal-heading">Add New Task </h3>
             <form id="task-form">
-                <label for="task-input">Task Description:</label>
-                <input type="text" id="task-input" required>
-                <button type="submit">Add Task</button>
+                <label for="task-input">Name</label>
+                <input type="text" id="name-input" required>
+                <label for="task-input">Description</label>
+                <input type="text" id="desc-input" required>
+                <br>
+                <button  id="submitBtn" type="submit">Add task</button>
             </form>
         </div>
     </div>
+
+
+    
   
     <script src="script.js"></script>
 </body>
